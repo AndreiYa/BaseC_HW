@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	int digit;
+    int digit;
 
     scanf("%d", &digit);
     
@@ -11,6 +11,6 @@ int main(void)
     int d_3 = digit % 10;
     
     printf("%d\n", d_1 + d_2 + d_3);
-	return 0;
+    return 0;
 }
 
