@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	float a, b, c;
+    float a, b, c;
     float res;
     
     scanf("%f %f %f", &a,&b,&c);
@@ -11,6 +11,6 @@ int main(void)
     
     printf("%.2f\n", res);
     
-	return 0;
+    return 0;
 }
 
