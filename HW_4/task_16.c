@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	int a,b;
+    int a,b;
     scanf("%d %d", &a, &b);
     
     if(a>b)
@@ -12,6 +12,6 @@ int main(void)
     else
     printf("Equal");
     
-	return 0;
+    return 0;
 }
 
