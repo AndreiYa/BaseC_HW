@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	int a,b,c,d,e;
+    int a,b,c,d,e;
     int max = 0;
     
     scanf("%d %d %d %d %d", &a,&b,&c,&d,&e);
@@ -16,5 +16,5 @@ int main(void)
     
     printf("%d", max);
     
-	return 0;
+    return 0;
 }
