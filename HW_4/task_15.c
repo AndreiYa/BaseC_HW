@@ -4,7 +4,7 @@ int main(void)
 {
     int month;
     scanf("%d", &month);
-    
+
     switch(month)
     {
         case 12:
@@ -30,7 +30,7 @@ int main(void)
         default:
             break;
     }
-    
-	return 0;
+
+    return 0;
 }
 
