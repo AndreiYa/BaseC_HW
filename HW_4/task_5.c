@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	int a,b;
+    int a,b;
 
     scanf("%d %d", &a,&b);
     
@@ -16,6 +16,6 @@ int main(void)
     
     printf("%d %d\n", a,b);
     
-	return 0;
+    return 0;
 }
 

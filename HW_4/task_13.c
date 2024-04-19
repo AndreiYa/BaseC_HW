@@ -11,6 +11,6 @@ int main(void)
     
     printf("%.2f %.2f", k,b);
     
-	return 0;
+    return 0;
 }
 

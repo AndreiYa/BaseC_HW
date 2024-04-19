@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	int digit;
+    int digit;
 
     scanf("%d", &digit);
     
@@ -21,5 +21,5 @@ int main(void)
     }
     
     printf("%d\n", max);
-	return 0;
+    return 0;
 }
