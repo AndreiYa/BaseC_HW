@@ -23,6 +23,6 @@ int main(void)
 
     printf("year average temperature: %.2f deg\n", avg_temp_year(2021, data_length, data));
     printf("year minimum temperature: %d deg\n", min_temp_year(2021, data_length, data));
-    printf("year maximum 2024 temperature: %d deg\n", max_temp_year(2021, data_length, data));
+    printf("year maximum temperature: %d deg\n", max_temp_year(2021, data_length, data));
     return 0;
 }
