@@ -1,0 +1,1 @@
+void get_params(int argc, char **argv);
