@@ -10,7 +10,7 @@ temp_api.o: api/temp_api.c
 	gcc -c -o temp_api.o temp_api.c
 
 clean:
-	del src/*.o
-	del *.exe
+	rm src/*.o
+	rm prog
 
 
