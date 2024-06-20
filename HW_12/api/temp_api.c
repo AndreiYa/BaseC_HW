@@ -215,7 +215,7 @@ void read_file(stat *data, char *name)
     int error=1;
     long count_row = 300;
 
-    data->line = (temp_data * ) malloc(sizeof(temp_data)*count_row);
+    data->line = (temp_data*) malloc(sizeof(temp_data)*count_row);
 
     while (fgets(row, sizeof(row), f)) {
         if (sscanf(row, "%d;%d;%d;%d;%d;%d", &data->line[data->length].year, &data->line[data->length].month, &data->line[data->length].day, &data->line[data->length].hour, &data->line[data->length].minute, &data->line[data->length].temperature) != 6)
@@ -233,7 +233,7 @@ void read_file(stat *data, char *name)
         if (data->length >= count_row)
         {
             count_row += 300;
-            data->line = (temp_data *) realloc(data->line, sizeof(temp_data)*count_row);
+            data->line = (temp_data*) realloc(data->line, sizeof(temp_data)*count_row);
         }
     }
 
