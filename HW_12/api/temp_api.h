@@ -27,7 +27,7 @@ int max_temp_year(stat *data);
 void print_data_month(int year, int month, float avg, int max, int min, int errors, int months);
 void print_data_year(int year, float avg, int max, int min, int errors);
 void get_params(int argc, char **argv, char **name, int *month);
-int read_file(stat *data, char *name);
+void read_file(stat *data, char *name);
 
 void stat_month(stat *data, int month);
 void stat_year(stat *data);

@@ -197,7 +197,7 @@ void get_params(int argc, char **argv, char **name, int *month)
     }
 }
 
-int read_file(stat *data, char *name)
+void read_file(stat *data, char *name)
 {
     FILE *f = fopen(name, "r");
 
@@ -212,7 +212,7 @@ int read_file(stat *data, char *name)
     }
 
     char row[100];
-    int count=1;
+    int error=1;
     long count_row = 300;
 
     data->line = (temp_data * ) malloc(sizeof(temp_data)*count_row);
@@ -222,11 +222,12 @@ int read_file(stat *data, char *name)
         {
             error_handler(1);
             printf("\n");
-            printf("===== Error in line %d =====\n", count++);
+            printf("===== Error in line %d =====\n", error++);
         }
         else
         {
-            count++, data->length++;
+            error++;
+            data->length++;
         }
 
         if (data->length >= count_row)
@@ -237,7 +238,6 @@ int read_file(stat *data, char *name)
     }
 
     fclose(f);
-    return count;
 }
 
 void stat_month(stat *data, int month)
