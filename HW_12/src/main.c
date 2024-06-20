@@ -1,8 +1,9 @@
 #include "../api/temp_api.h"
 
+stat data;
+
 int main(int argc, char **argv)
 {
-    stat data;
     char *file_name;
     int month=0;
 
