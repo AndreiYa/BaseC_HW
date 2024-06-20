@@ -1,107 +1,263 @@
-#include <stdio.h>
 #include "temp_api.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-float avg_temp_month(int month, unsigned int data_length, temp_data data[])
+int months=0;
+
+int error_handler(int num)
+{
+    static int error = 0;
+    if(num)
+    {
+        error++;
+    }
+
+    return error;
+}
+
+float avg_temp_month(stat *data, int month)
 {
     float avg_temp=0;
     int count=0;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if (data[i].month == month)
+        if (data->line[i].month == month)
         {
-            avg_temp += data[i].temperature;
+            avg_temp += data->line[i].temperature;
             count++;
         }
     }
+    months = count;
     return avg_temp/count;
 }
 
-int min_temp_month(int month, unsigned int data_length, temp_data temp_data[])
+int min_temp_month(stat *data, int month)
 {
-    int min=temp_data[0].temperature;
+    int min=100;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if(temp_data[i].month == month)
+        if(data->line[i].month == month)
         {
-            if(temp_data[i].temperature < min)
+            if(data->line[i].temperature < min)
             {
-                min=temp_data[i].temperature;
+                min=data->line[i].temperature;
             }
         }
     }
     return min;
 }
 
-int max_temp_month(int month, unsigned int data_length, temp_data temp_data[])
+int max_temp_month(stat *data, int month)
 {
-    int max=temp_data[0].temperature;
+    int max=-100;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if(temp_data[i].month == month)
+        if(data->line[i].month == month)
         {
-            if(temp_data[i].temperature > max)
+            if(data->line[i].temperature > max)
             {
-                max=temp_data[i].temperature;
+                max=data->line[i].temperature;
             }
         }
     }
     return max;
 }
 
-float avg_temp_year(int year, unsigned int data_length, temp_data data[])
+float avg_temp_year(stat *data)
 {
     float avg_temp=0;
     int count=0;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if (data[i].year == year)
-        {
-            avg_temp += data[i].temperature;
-            count++;
-        }
+        avg_temp += data->line[i].temperature;
+        count++;
     }
     return avg_temp/count;
 }
 
-int min_temp_year(int year, unsigned int data_length, temp_data temp_data[])
+int min_temp_year(stat *data)
 {
-    int min=temp_data[0].temperature;
+    int min=data->line[0].temperature;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if(temp_data[i].year == year)
+        if(data->line[i].temperature < min)
         {
-            if(temp_data[i].temperature < min)
-            {
-                min=temp_data[i].temperature;
-            }
+            min=data->line[i].temperature;
         }
     }
     return min;
 }
 
-int max_temp_year(int year, unsigned int data_length, temp_data temp_data[])
+int max_temp_year(stat *data)
 {
-    int max=temp_data[0].temperature;
+    int max=data->line[0].temperature;
 
-    for(int i=0; i<data_length; i++)
+    for(int i=0; i<data->length; i++)
     {
-        if(temp_data[i].year == year)
+        if(data->line[i].temperature > max)
         {
-            if(temp_data[i].temperature > max)
-            {
-                max=temp_data[i].temperature;
-            }
+            max=data->line[i].temperature;
         }
     }
     return max;
 }
 
-void stat_per_month(unsigned int data_length, temp_data temp_Data[])
+void print_data_month(int year, int month, float avg, int max, int min, int errors, int months)
 {
+    printf("\n");
+    printf("# Year Month NuValue ErValue MonthAvg MonthMax MonthMin\n");
+    printf("-------------------------------------------------------\n");
+    printf("1  %4d   %1d     %3d     %4d   %5.2f      %3d      %3d \n", year, month, months, errors, avg, max, min);
+    printf("-------------------------------------------------------\n");
+    printf("\n");
+}
 
+void print_data_year(int year, float avg, int max, int min, int errors)
+{
+    printf("\n");
+    printf("# Year ErValue YearAvg YearMax YearMin\n");
+    printf("--------------------------------------\n");
+    printf("1 %4d     %3d   %5.2f     %3d     %3d \n", year, errors, avg, max, min);
+    printf("--------------------------------------\n");
+    printf("\n");
+}
+
+
+void get_params(int argc, char **argv, char **name, int *month)
+{
+    if(!argv[1])
+    {
+        printf("\n"
+               "===================\n"
+               "Please read help -h\n"
+               "===================\n"
+               "\n");
+        exit(0);
+    }
+
+    for(int i=0; i<argc; i++)
+    {
+        char* param = argv[i];
+        if(param[0] == '-')
+        {
+            switch (param[1]) {
+                case 'h':
+                    printf("\n"
+                           "======  Help: params [options]  ======\n"
+                           "Options:\n"
+                           "-h          This help file\n"
+                           "-f <PATH>   Path to CSV data file\n"
+                           "-m <MONTH>  Print stats for this month\n"
+                           "======================================\n"
+                           "\n");
+                    exit(0);
+                case 'f':
+                    if(!argv[i+1])
+                    {
+                        printf("\n"
+                               "=======================\n"
+                               "Error. No input file!!!\n"
+                               "=======================\n"
+                               "\n");
+                        exit(0);
+                    }
+                    *name=argv[i+1];
+                    break;
+                case 'm':
+                    if(!argv[i+1])
+                    {
+                        printf("\n"
+                               "==============================================\n"
+                               "Error. Please enter correct month from 1 to 12\n"
+                               "==============================================\n"
+                               "\n");
+                        exit(0);
+                    }
+                    char *end;
+                    int m = strtol(argv[i+1], &end, 10);
+                    if(m >=1 && m <=12)
+                    {
+                        *month = m;
+                        break;
+                    }
+                    printf("\n"
+                           "=================================\n"
+                           "Error. Month must be from 1 to 12\n"
+                           "=================================\n"
+                           "\n");
+                default:
+                    exit(0);
+            }
+        }
+    }
+}
+
+int read_file(stat *data, char *name)
+{
+    FILE *f = fopen(name, "r");
+
+    if (f == NULL)
+    {
+        printf("\n"
+               "============================\n"
+               "Error. Reading input file!!!\n"
+               "============================\n"
+               "\n");
+        exit(0);
+    }
+
+    char row[100];
+    int count=1;
+    long count_row = 300;
+
+    data->line = (temp_data * ) malloc(sizeof(temp_data)*count_row);
+
+    while (fgets(row, sizeof(row), f)) {
+        if (sscanf(row, "%d;%d;%d;%d;%d;%d", &data->line[data->length].year, &data->line[data->length].month, &data->line[data->length].day, &data->line[data->length].hour, &data->line[data->length].minute, &data->line[data->length].temperature) != 6)
+        {
+            error_handler(1);
+            printf("\n");
+            printf("===== Error in line %d =====\n", count++);
+        }
+        else
+        {
+            count++, data->length++;
+        }
+
+        if (data->length >= count_row)
+        {
+            count_row += 300;
+            data->line = (temp_data *) realloc(data->line, sizeof(temp_data)*count_row);
+        }
+    }
+
+    fclose(f);
+    return count;
+}
+
+void stat_month(stat *data, int month)
+{
+    int year = data->line[0].year;
+    int min = min_temp_month(data, month);
+    int max = max_temp_month(data, month);
+    float avg = avg_temp_month(data, month);
+    int errors = error_handler(0);
+
+    print_data_month(year, month, avg, max, min, errors, months);
+}
+
+void stat_year(stat *data)
+{
+    int year = data->line[0].year;
+    int min = min_temp_year(data);
+    int max = max_temp_year(data);
+    float avg = avg_temp_year(data);
+    int errors = error_handler(0);
+
+    print_data_year(year, avg, max, min, errors);
 }

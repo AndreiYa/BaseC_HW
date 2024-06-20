@@ -1,7 +1,7 @@
 all: prog
 
-prog: src/main.o api/temp_api.c helpers/helpers.c
-	gcc -o prog src/main.o api/temp_api.c helpers/helpers.c
+prog: src/main.o api/temp_api.c
+	gcc -o prog src/main.o api/temp_api.c
 
 main.o: src/main.c
 	gcc -c -o main.o main.c
@@ -9,11 +9,8 @@ main.o: src/main.c
 temp_api.o: api/temp_api.c
 	gcc -c -o temp_api.o temp_api.c
 
-helpers.o: helpers/helpers.c
-	gcc -c -o helpers.o helpers.c
-
 clean:
-	rm src/*.o
-	rm *.c
+	del src/*.o
+	del *.exe
 
 
