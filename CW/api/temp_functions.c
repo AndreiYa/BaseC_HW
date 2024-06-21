@@ -66,58 +66,6 @@ int max_temp_month(stat *data, int month)
     return max;
 }
 
-float avg_temp_year(stat *data, int month)
-{
-    float avg_temp=0;
-    int count=0;
-
-    for(int i=0; i<data->length; i++)
-    {
-	    if (data->line[i].month == month)
-		{
-		    avg_temp += data->line[i].temperature;
-		    count++;
-	    }
-    }
-	months = count;
-    return avg_temp/count;
-}
-
-int min_temp_year(stat *data, int month)
-{
-    int min=300;
-
-    for(int i=0; i<data->length; i++)
-    {
-
-	    if (data->line[i].month == month)
-		{
-		    if (data->line[i].temperature < min)
-			{
-			    min = data->line[i].temperature;
-		    }
-	    }
-    }
-    return min;
-}
-
-int max_temp_year(stat *data, int month)
-{
-    int max=data->line[0].temperature;
-
-    for(int i=0; i<data->length; i++)
-    {
-	    if (data->line[i].month == month)
-		{
-		    if (data->line[i].temperature > max)
-			{
-			    max = data->line[i].temperature;
-		    }
-	    }
-    }
-    return max;
-}
-
 void print_data_month(int year, int month, float avg, int max, int min, int errors, int months)
 {
     printf("\n");
@@ -259,20 +207,39 @@ void stat_month(stat *data, int month)
 
 void stat_year(stat *data)
 {
+	int year_min=100;
+	int year_max=-100;
+	float year_avg=0;
+
 	printf("\n");
-	printf("#    Year Month NuValue ErValue   YearAvg YearMax YearMin\n");
+	printf("#    Year Month NuValue ErValue       Avg     Max     Min\n");
 	printf("---------------------------------------------------------\n");
 
 	for (int i = 1; i <= 12; i++)
 	{
 		int year = data->line[0].year;
-		int min = min_temp_year(data, i);
-		int max = max_temp_year(data, i);
-		float avg = avg_temp_year(data, i);
+		int min = min_temp_month(data, i);
+		if(min < year_min)
+		{
+			year_min = min;
+		}
+		int max = max_temp_month(data, i);
+		if(max > year_max)
+		{
+			year_max = max;
+		}
+		float avg = avg_temp_month(data, i);
+		year_avg += avg;
 		int errors = error_handler(0);
 		print_data_year(i, year, i, avg, max, min, errors, months);
 	}
-
 	printf("---------------------------------------------------------\n");
 	printf("\n");
+	printf("Year %d\n", data->line[0].year);
+
+	printf("Avg. temp. - %.2f\n", year_avg/12);
+	printf("Min. temp. - %d\n", year_min);
+	printf("Max. temp. - %d\n", year_max);
+	printf("\n");
+	printf("---------------------------------------------------------\n");
 }

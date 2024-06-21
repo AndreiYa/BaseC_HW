@@ -20,10 +20,6 @@ float avg_temp_month(stat *data, int month);
 int min_temp_month(stat *data, int month);
 int max_temp_month(stat *data, int month);
 
-float avg_temp_year(stat *data, int month);
-int min_temp_year(stat *data, int month);
-int max_temp_year(stat *data, int month);
-
 void print_data_month(int year, int month, float avg, int max, int min, int errors, int months);
 void print_data_year(int idx, int year, int month, float avg, int max, int min, int errors, int months);
 void get_params(int argc, char **argv, char **name, int *month);
